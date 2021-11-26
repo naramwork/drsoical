@@ -1,6 +1,4 @@
 <button
-    class="inline-flex items-center justify-center w-10 h-10 mr-2 text-gray-700 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-gray-200">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24">
-        {{ $slot }}
-    </svg>
+    {{ $attributes->merge(['class' => 'bg-transparent m-5 py-2 px-12 text-lg hover:bg-blue-500 text-blue-700 font-semibold hover:text-white  border border-blue-500 hover:border-transparent rounded']) }}>
+    {{ $slot }}
 </button>

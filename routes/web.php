@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\ContentPage;
 use App\Http\Livewire\VersesPage;
 use Illuminate\Support\Facades\Route;
 
