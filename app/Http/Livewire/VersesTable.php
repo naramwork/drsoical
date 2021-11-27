@@ -16,9 +16,10 @@ class VersesTable extends LivewireDatatable
     public function columns()
     {
         return [
-            Column::name('content')->searchable()->alignCenter(),
-
-            Column::name('surah')->alignCenter(),
+            Column::name('content')->searchable()->alignCenter()->unsortable()->label('النص'),
+            Column::name('surah')->alignCenter()->unsortable()->label('السورة'),
+            Column::name('range')->alignCenter()->unsortable(),
+            Column::name('part')->alignCenter()->unsortable(),
             NumberColumn::name('order')
                 ->defaultSort('asc')
                 ->searchable()
@@ -33,7 +34,15 @@ class VersesTable extends LivewireDatatable
 
     public function cellClasses($row, $column)
     {
+
         return 'align-middle text-lg text-right py-4 leading-10';
+    }
+
+    public function rowClasses($row, $loop)
+    {
+        if ($loop->even) {
+            return 'bg-gray-50';
+        }
     }
 
     /**
@@ -45,25 +54,36 @@ class VersesTable extends LivewireDatatable
      */
     public function changeOrder(String $order, String $action)
     {
-        $verse = Verse::where('order', $order)->first();
-        if ($action == 'up') {
-            $topVerse = Verse::where('order', $order - 1)->first();
-            if ($verse != null && $topVerse != null) {
-                $topVerse->order += 1;
-                $verse->order -= 1;
-                $topVerse->save();
-                $verse->save();
-            }
-        } elseif ($action == 'down') {
-            $downVerse = Verse::where('order', $order + 1)->first();
-            if ($verse != null && $downVerse != null) {
-                $verse->order += 1;
-                $downVerse->order -= 1;
-                $downVerse->save();
-                $verse->save();
-            }
+        if ($action == 'down') {
+            $orderBy = 'ASC';
+            $secondaryOrder = $order + 1;
+        } elseif ($action == 'up') {
+            $orderBy = 'DESC';
+            $secondaryOrder = $order - 1;
         } else {
-            dd('error');
+            $this->showError();
+            return;
         }
+        $verses = Verse::whereIn('order', [$order, $secondaryOrder])->orderBy('order', $orderBy)->get();
+
+
+        if (count($verses) == 2) {
+
+            $verse = $verses[0];
+            $SecondaryVerse = $verses[1];
+            $verse->order = $secondaryOrder;
+            $SecondaryVerse->order = $order;
+            $SecondaryVerse->save();
+            $verse->save();
+        } else {
+            $this->showError();
+        }
+    }
+
+
+    public function showError()
+    {
+        $this->emit('showAlert');
+        $this->emit('customMessage', 'هذه العملية غير متاحة', 'red');
     }
 }

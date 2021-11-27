@@ -14,9 +14,9 @@ module.exports = {
             fontFamily: {
                 sans: ["Cairo", ...defaultTheme.fontFamily.sans],
             },
-        },
-        fontSize: {
-            lg: ["20px", "2.25rem"],
+            fontSize: {
+                lg: ["20px", "2.25rem"],
+            },
         },
     },
 
