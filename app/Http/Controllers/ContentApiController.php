@@ -12,9 +12,18 @@ class ContentApiController extends Controller
     public function getVerses()
     {
 
-        $order = ContentInfo::first('start')->start;
+        $order = ContentInfo::firstWhere('name', 'verse')->start;
+        $verses = Verse::where('order', '>=', $order)->paginate(10);
 
-        return Verse::where('order', '>=', $order)->cursorPaginate(10);
+        $previous = null;
+        if ($verses->currentPage() == $verses->lastPage()) {
+
+            $previous = Verse::where('order', '<', $order)->paginate(10)->setPageName('previous');
+        };
+        $data = collect(['previous' => $previous, 'verses' => $verses]);
+
+
+        return $data;
     }
 
     public function getUpdatedContent($date)

@@ -2,10 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\ContentInfo;
 use Livewire\Component;
+use App\Models\ContentInfo;
 
-class VersesPage extends Component
+
+class DuasPage extends Component
 {
 
     public String $startFrom = '';
@@ -16,11 +17,6 @@ class VersesPage extends Component
     public ContentInfo $contentInfo;
     protected $listeners = ['showAlert', 'setShowAlertModal'];
 
-    public function render()
-    {
-        return view('livewire.pages.verses-page');
-    }
-
 
     /**
      * mount init startFrom input from contentInfo table
@@ -29,10 +25,18 @@ class VersesPage extends Component
      */
     public function mount()
     {
-        $this->contentInfo = ContentInfo::where('name', 'verse')->first();
+        $this->contentInfo = ContentInfo::where('name', 'duas')->first();
         if ($this->contentInfo != null) {
             $this->startFrom = $this->contentInfo->start;
         }
+    }
+
+
+
+
+    public function render()
+    {
+        return view('livewire.pages.duas-page');
     }
 
     /**
@@ -51,7 +55,6 @@ class VersesPage extends Component
     }
 
 
-
     /**
      * showAlert show bottom alert with custom message
      *
@@ -60,8 +63,6 @@ class VersesPage extends Component
      */
     public function showAlert($type)
     {
-
-
         $this->emit('changeType', $type);
         $this->emitSelf('setShowAlertModal');
     }

@@ -11,27 +11,38 @@ class VersesTable extends LivewireDatatable
 {
     public $model = Verse::class;
 
-    protected $listeners = ['update' => 'update', 'refreshComponent' => '$refresh'];
+    protected $listeners = ['refreshVerseComponent' => '$refresh'];
 
     public function columns()
     {
         return [
             Column::name('content')->searchable()->alignCenter()->unsortable()->label('النص'),
             Column::name('surah')->alignCenter()->unsortable()->label('السورة'),
-            Column::name('range')->alignCenter()->unsortable(),
-            Column::name('part')->alignCenter()->unsortable(),
+            Column::name('range')->alignCenter()->unsortable()->label('المجال'),
+            Column::name('part')->alignCenter()->unsortable()->label('الجزء'),
             NumberColumn::name('order')
                 ->defaultSort('asc')
                 ->searchable()
-                ->alignCenter(),
+                ->alignCenter()
+                ->label('الترتيب'),
 
             Column::callback(['id', 'order', 'content'], function ($id, $order, $content) {
 
-                return view('actions.verses-action', ['id' => $id, 'order' => $order, 'content' => $content]);
+                return view('actions.verses-action', ['type' => 'verse', 'id' => $id, 'order' => $order, 'content' => $content]);
             })->unsortable()
         ];
     }
 
+
+
+
+    /**
+     * tow functions to customize table style
+     *
+     * @param  mixed $row
+     * @param  mixed $column
+     * @return void
+     */
     public function cellClasses($row, $column)
     {
 
@@ -54,27 +65,33 @@ class VersesTable extends LivewireDatatable
      */
     public function changeOrder(String $order, String $action)
     {
+
+
         if ($action == 'down') {
-            $orderBy = 'ASC';
-            $secondaryOrder = $order + 1;
+
+            $query = '`order` = (select min(`order`) from verses where `order` >=' . $order + 1 . ')';
         } elseif ($action == 'up') {
-            $orderBy = 'DESC';
-            $secondaryOrder = $order - 1;
+            $query = '`order` = (select max(`order`) from verses where `order` <=' . $order - 1 . ')';
         } else {
             $this->showError();
             return;
         }
-        $verses = Verse::whereIn('order', [$order, $secondaryOrder])->orderBy('order', $orderBy)->get();
 
 
-        if (count($verses) == 2) {
+        $verse = Verse::where('order', $order)->first();
+        $secondaryVerse = Verse::whereRaw($query)->first();
 
-            $verse = $verses[0];
-            $SecondaryVerse = $verses[1];
-            $verse->order = $secondaryOrder;
-            $SecondaryVerse->order = $order;
-            $SecondaryVerse->save();
-            $verse->save();
+
+        if ($secondaryVerse != null) {
+
+            $verse->order = $secondaryVerse->order;
+            $secondaryVerse->order = $order;
+            $secondaryVerse->save();
+            $saved = $verse->save();
+            if ($saved) {
+                $this->emit('customMessage', 'تمت إعادة الترتيب بنجاح', 'green');
+                $this->emit('setShowAlertModal');
+            }
         } else {
             $this->showError();
         }
@@ -83,7 +100,7 @@ class VersesTable extends LivewireDatatable
 
     public function showError()
     {
-        $this->emit('showAlert');
         $this->emit('customMessage', 'هذه العملية غير متاحة', 'red');
+        $this->emit('setShowAlertModal');
     }
 }

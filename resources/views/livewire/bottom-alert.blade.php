@@ -10,4 +10,4 @@
         </svg>
     </span> --}}
 </div>
-{{-- x-data="{}" x-init="setTimeout(() => { $wire.hideAlert() }, 4000);" --}}
+

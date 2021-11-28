@@ -4,9 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Verse;
 use LivewireUI\Modal\ModalComponent;
-use Symfony\Component\VarDumper\VarDumper;
 
-class EditModal extends ModalComponent
+class EditVerseModal extends ModalComponent
 {
     public String $content = '';
     public String $surah = '';
@@ -27,7 +26,10 @@ class EditModal extends ModalComponent
         'surah' => 'required',
     ];
 
-
+    public function render()
+    {
+        return view('livewire.edit-verse-modal');
+    }
     public function mount(Verse $verse)
     {
 
@@ -43,18 +45,15 @@ class EditModal extends ModalComponent
             }
         }
     }
-    public function render()
-    {
-        return view('livewire.edit-modal');
-    }
+
 
 
     public function deleteVerse()
     {
+
         $deleted = $this->verse->delete();
         if ($deleted) {
-            $this->emit('openModal', 'done-modal');
-            $this->emitTo('verses-table', 'refreshComponent');
+            $this->closeAndUpdate('delete');
         }
     }
 
@@ -65,9 +64,7 @@ class EditModal extends ModalComponent
             $this->verse->content = $this->content;
             $saved = $this->verse->save();
             if ($saved) {
-
-                $this->emitTo('verses-table', 'refreshComponent');
-                $this->emitTo('verses-page', 'updateContent');
+                $this->closeAndUpdate('update');
             }
         }
     }
@@ -85,8 +82,14 @@ class EditModal extends ModalComponent
         $newVerse->order = $newVerse->id;
         $saved = $newVerse->save();
         if ($saved) {
-            $this->closeModal();
-            $this->emitTo('verses-page', 'addContent');
+            $this->closeAndUpdate('add');
         }
+    }
+
+    public function closeAndUpdate($type)
+    {
+        $this->closeModal();
+        $this->emitTo('verses-table', 'refreshVerseComponent');
+        $this->emitTo('verses-page', 'showAlert', $type);
     }
 }

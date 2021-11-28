@@ -16,10 +16,10 @@ class CreateVersesTable extends Migration
         Schema::create('verses', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->String('range');
-            $table->String('part');
+            $table->String('range')->nullable();
+            $table->String('part')->nullable();
             $table->String('surah');
-            $table->integer('order');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

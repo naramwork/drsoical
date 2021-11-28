@@ -1,14 +1,14 @@
-<div>
+<div class="overflow-hidden">
     @if ($beforeTableSlot)
         <div class="mt-8">
             @include($beforeTableSlot)
         </div>
     @endif
     <div class="relative">
-        <div class="flex justify-between items-center mb-1">
-            <div class="h-10 flex items-center">
+        <div class="flex justify-end items-center mb-1">
+            <div class="ml-4 flex items-center">
                 @if ($this->searchableColumns()->count())
-                    <div class="w-96 flex rounded-lg shadow-sm">
+                    <div class="w-96 flex rounded-lg  shadow-sm">
                         <div class="relative flex-grow focus-within:z-10">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" stroke="currentColor" fill="none">
@@ -85,7 +85,7 @@
         @endif
 
         <div wire:loading.class="opacity-50"
-            class="rounded-lg @unless($complex || $this->hidePagination) rounded-b-none @endunless shadow-lg bg-white max-w-screen overflow-x-scroll border-4 @if ($this->activeFilters) border-blue-500 @else border-transparent @endif @if ($complex) rounded-b-none border-b-0 @endif">
+            class="rounded-lg @unless($complex || $this->hidePagination) rounded-b-none @endunless shadow-lg bg-white max-w-screen overflow-hidden border-4 @if ($this->activeFilters) border-blue-500 @else border-transparent @endif @if ($complex) rounded-b-none border-b-0 @endif">
             <div>
                 <div class="table align-middle min-w-full">
                     @unless($this->hideHeader)

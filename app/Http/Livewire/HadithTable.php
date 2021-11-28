@@ -2,16 +2,20 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Dua;
-use Mediconesystems\LivewireDatatables\Column;
-use Mediconesystems\LivewireDatatables\NumberColumn;
-use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
-class DuasTabel extends LivewireDatatable
+use App\Models\Hadith;
+use Mediconesystems\LivewireDatatables\Column;
+use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Mediconesystems\LivewireDatatables\NumberColumn;
+
+class HadithTable extends LivewireDatatable
 {
-    public $model = Dua::class;
+    public $model = Hadith::class;
 
     protected $listeners = ['refreshComponent' => '$refresh'];
+
+
+
     public function columns()
     {
         return [
@@ -25,30 +29,31 @@ class DuasTabel extends LivewireDatatable
 
             Column::callback(['id', 'order', 'content'], function ($id, $order, $content) {
 
-                return view('actions.verses-action', ['type' => 'dua', 'id' => $id, 'order' => $order, 'content' => $content]);
+                return view('actions.verses-action', ['type' => 'hadith', 'id' => $id, 'order' => $order, 'content' => $content]);
             })->unsortable()
         ];
     }
 
+
     public function changeOrder(String $order, String $action)
     {
         if ($action == 'down') {
-            $query = '`order` = (select min(`order`) from duas where `order` >=' . $order + 1 . ')';
+            $query = '`order` = (select min(`order`) from hadiths where `order` >=' . $order + 1 . ')';
         } elseif ($action == 'up') {
-            $query = '`order` = (select max(`order`) from duas where `order` <=' . $order - 1 . ')';
+            $query = '`order` = (select max(`order`) from hadiths where `order` <=' . $order - 1 . ')';
         } else {
             $this->showError();
             return;
         }
-        $dua = Dua::where('order', $order)->first();
-        $secondaryDua = Dua::whereRaw($query)->first();
+        $hadith = Hadith::where('order', $order)->first();
+        $secondaryHadith = Hadith::whereRaw($query)->first();
 
-        if ($secondaryDua != null) {
+        if ($secondaryHadith != null) {
 
-            $dua->order = $secondaryDua->order;
-            $secondaryDua->order = $order;
-            $secondaryDua->save();
-            $saved = $dua->save();
+            $hadith->order = $secondaryHadith->order;
+            $secondaryHadith->order = $order;
+            $secondaryHadith->save();
+            $saved = $hadith->save();
             if ($saved) {
                 $this->emit('customMessage', 'تمت إعادة الترتيب بنجاح', 'green');
                 $this->emit('setShowAlertModal');

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Livewire\ContentPage;
+use App\Http\Livewire\DuasPage;
+use App\Http\Livewire\HadithPage;
 use App\Http\Livewire\VersesPage;
 use App\Models\Verse;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +27,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     })->name('dashboard');
 
     Route::get('/verses', VersesPage::class)->name('verses');
+    Route::get('/duas', DuasPage::class)->name('duas');
+    Route::get('/hadith', HadithPage::class)->name('hadith');
 });

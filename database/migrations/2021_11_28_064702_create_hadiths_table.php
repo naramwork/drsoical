@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDuasTable extends Migration
+class CreateHadithsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDuasTable extends Migration
      */
     public function up()
     {
-        Schema::create('duas', function (Blueprint $table) {
+        Schema::create('hadiths', function (Blueprint $table) {
             $table->id();
             $table->text('content');
             $table->integer('order')->nullable();
@@ -28,6 +28,6 @@ class CreateDuasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('duas');
+        Schema::dropIfExists('hadiths');
     }
 }

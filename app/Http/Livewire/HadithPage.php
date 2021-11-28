@@ -5,20 +5,21 @@ namespace App\Http\Livewire;
 use App\Models\ContentInfo;
 use Livewire\Component;
 
-class VersesPage extends Component
+class HadithPage extends Component
 {
 
     public String $startFrom = '';
     public  $showAlertModel = false;
-    public $type = 'add';
+    public $type = '';
     public $count = 0;
 
     public ContentInfo $contentInfo;
     protected $listeners = ['showAlert', 'setShowAlertModal'];
 
+
     public function render()
     {
-        return view('livewire.pages.verses-page');
+        return view('livewire.pages.hadith-page');
     }
 
 
@@ -29,11 +30,12 @@ class VersesPage extends Component
      */
     public function mount()
     {
-        $this->contentInfo = ContentInfo::where('name', 'verse')->first();
+        $this->contentInfo = ContentInfo::where('name', 'hadith')->first();
         if ($this->contentInfo != null) {
             $this->startFrom = $this->contentInfo->start;
         }
     }
+
 
     /**
      * change start from 
@@ -51,7 +53,6 @@ class VersesPage extends Component
     }
 
 
-
     /**
      * showAlert show bottom alert with custom message
      *
@@ -60,8 +61,6 @@ class VersesPage extends Component
      */
     public function showAlert($type)
     {
-
-
         $this->emit('changeType', $type);
         $this->emitSelf('setShowAlertModal');
     }
