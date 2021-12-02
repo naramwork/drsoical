@@ -2,6 +2,8 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\AdminProfile;
+use App\Models\CustomerProfile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +22,9 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+
+        $type = $input['type'] ?? '';
+        $attr = $input;
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -27,10 +32,37 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
-        return User::create([
+
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+        $this->addToProfile($user, $type, $attr);
+
+        return $user;
+    }
+
+    private function addToProfile($user, $type, $attr)
+    {
+        if ($user != null && $user->exists()) {
+            if ($type == 'user') {
+                $userProfile = CustomerProfile::create($attr);
+                if ($userProfile->exists()) {
+                    $userProfile->user()->save($user);
+                } else {
+                    $user->delete();
+                }
+            } else {
+                $admin = AdminProfile::create([
+                    'email' => $attr['email'],
+                ]);
+                if ($admin->exists()) {
+                    $admin->user()->save($user);
+                } else {
+                    $user->delete();
+                }
+            }
+        }
     }
 }

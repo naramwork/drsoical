@@ -12,17 +12,18 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:mr-10 sm:flex sm:items-center">
-                    <x-jet-nav-link class="text-base no-underline px-3 pb-1 " href="{{ route('dashboard') }}"
+                    <x-jet-nav-link class="text-base no-underline px-10 pb-1 " href="{{ route('dashboard') }}"
                         :active="request()->routeIs('dashboard')">
                         {{ __('لوحة التحكم') }}
                     </x-jet-nav-link>
+                    {{-- content dropdown --}}
                     <x-jet-dropdown>
                         <x-slot name="trigger">
                             <button type="button"
                                 class="inline-flex items-center px-3 py-2 border border-transparent  leading-4  font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
                                 {{ __('ادارة المحتوى') }}
 
-                                <svg class="mr-2 -ml-0.5 h-4 w-4" xmrns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                <svg class="mr-2 h-4 w-4" xmrns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     fill="currentColor">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -54,6 +55,45 @@
 
                         </x-slot>
                     </x-jet-dropdown>
+
+                    {{-- accouts controll --}}
+                    @can('control')
+                        <x-jet-dropdown>
+                            <x-slot name="trigger">
+                                <button type="button"
+                                    class="inline-flex items-center  py-2 border border-transparent  leading-4  font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                    {{ __('إدارة العضوية') }}
+
+                                    <svg class="mr-2 -ml-0.5 h-4 w-4" xmrns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <div class=" block px-4 py-2 text-sm text-gray-400">
+                                    {{ __('إدارة العضوية') }}
+                                </div>
+
+
+                                <x-jet-dropdown-link class="text-lg" href="{{ route('customers-control') }}">
+                                    {{ __('المستخدمين') }}
+                                </x-jet-dropdown-link>
+
+                                <div class="border-t border-gray-100"></div>
+
+
+                                <x-jet-dropdown-link class="text-lg mb-2" href="{{ route('admins-control') }}">
+                                    {{ __('الإدارة') }}
+                                </x-jet-dropdown-link>
+
+
+                            </x-slot>
+                        </x-jet-dropdown>
+                    @endcan
+
                 </div>
             </div>
 
