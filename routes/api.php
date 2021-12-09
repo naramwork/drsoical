@@ -12,5 +12,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/verses', [ContentApiController::class, 'getVerses']);
+Route::get('/previous_verses/{verses}', [ContentApiController::class, 'getPreviousVerses'])->name('previous_verses');
 
-Route::get('/updated/{date}', [ContentApiController::class, 'getUpdatedContent']);
+Route::get('/updated/{date?}', [ContentApiController::class, 'getUpdatedContent']);
