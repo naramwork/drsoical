@@ -5,10 +5,13 @@ use App\Http\Livewire\ContentPage;
 use App\Http\Livewire\CustomersControl;
 use App\Http\Livewire\DuasPage;
 use App\Http\Livewire\HadithPage;
+use App\Http\Livewire\MessagePage;
+use App\Http\Livewire\UserProfilePage;
 use App\Http\Livewire\VersesPage;
 use App\Http\Livewire\Visitor;
 use App\Http\Middleware\CheckStatus;
 use App\Models\AdminProfile;
+use App\Models\Message;
 use App\Models\User;
 use App\Models\Verse;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +24,8 @@ Route::get('/', function () {
     // if (Auth::user()) {
     //     Auth::user()->assignRole('superAdmin');
     // }
+
+    // return Message::all();
     return view('welcome');
     // $lastRecordDate = Verse::where('updated_at', Verse::max('updated_at'))->first();
     // dd($lastRecordDate);
@@ -47,5 +52,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', CheckStatus::class]],
         Route::get('/admin/admins-control', AdminsControl::class)->name('admins-control');
 
         Route::get('/admin/customers-control', CustomersControl::class)->name('customers-control');
+    });
+
+
+    Route::group(['middleware' => ['can:observe']], function () {
+        Route::get('/user/{id}', UserProfilePage::class)->name('user-profile-page');
+
+        Route::get('/messages', MessagePage::class)->name('messages');
     });
 });

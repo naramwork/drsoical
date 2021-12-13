@@ -56,6 +56,7 @@
                         </x-slot>
                     </x-jet-dropdown>
 
+
                     {{-- accouts controll --}}
                     @can('control')
                         <x-jet-dropdown>
@@ -93,7 +94,12 @@
                             </x-slot>
                         </x-jet-dropdown>
                     @endcan
-
+                    @can('observe')
+                        <x-jet-nav-link class="text-base no-underline px-10 pb-1 " href="{{ route('messages') }}"
+                            :active="request()->routeIs('messages')">
+                            {{ __('الرسائل') }}
+                        </x-jet-nav-link>
+                    @endcan
                 </div>
             </div>
 

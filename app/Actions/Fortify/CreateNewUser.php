@@ -24,7 +24,12 @@ class CreateNewUser implements CreatesNewUsers
     {
 
         $type = $input['type'] ?? '';
-        $attr = $input;
+        if ($type == 'user') {
+            $attr =  Validator::make($input, CustomerProfile::$createRules)->validate();
+        } else {
+            $attr = $input;
+        }
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
