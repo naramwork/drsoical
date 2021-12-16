@@ -46,6 +46,17 @@
                     {{ __('تسجيل دخول') }}
                 </x-jet-button>
             </div>
+
+            <hr class="mt-4">
+            <div class="flex items-center justify-center mt-4">
+
+
+
+
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+                    {{ __('ليس لديك اشتراك؟ تسجيل') }}
+                </a>
+            </div>
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>

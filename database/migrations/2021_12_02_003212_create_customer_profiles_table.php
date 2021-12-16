@@ -30,7 +30,7 @@ class CreateCustomerProfilesTable extends Migration
             $table->string('civil_id_no')->require();
             $table->string('civil_id_no_exp')->require();
             $table->date('birthdate')->require();
-            $table->string('fire_base_token')->require();
+            $table->json('fire_base_token')->require();
             $table->json('more');
             // $table->string('skin_colour');
             // $table->string('physique');

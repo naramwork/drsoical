@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\CustomerProfile;
 use App\Models\User;
+use App\Traits\Firebase;
+use Illuminate\Support\Facades\Log;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
@@ -11,6 +13,7 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 
 class CustomerTable extends LivewireDatatable
 {
+
     public function builder()
     {
         return User::where('profile_type', CustomerProfile::class)->join('customer_profiles', 'users.profile_id', '=', 'customer_profiles.id');
@@ -48,6 +51,9 @@ class CustomerTable extends LivewireDatatable
             $this->emit('setShowAlertModal');
         }
     }
+
+
+
 
 
     public function cellClasses($row, $column)

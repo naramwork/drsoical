@@ -11,7 +11,8 @@ class CustomerProfile extends Model
 
     protected $casts = [
 
-        'more' => 'array'
+        'more' => 'array',
+        'fire_base_token' => 'array'
     ];
 
     public static $createRules = [
@@ -25,7 +26,7 @@ class CustomerProfile extends Model
         'nationality' => ['string', 'max:255', 'required'],
         'civil_id_no' => ['string', 'max:255', 'required'],
         'civil_id_no_exp' => ['string', 'max:255', 'required'],
-        'fire_base_token' => ['string', 'max:255', 'required'],
+        'fire_base_token' => ['required'],
         'birthdate' => ['date', 'max:255', 'required'],
         'address' => ['string', 'required'],
         'height' => ['numeric', 'max:255', 'required'],

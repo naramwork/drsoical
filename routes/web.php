@@ -26,11 +26,11 @@ Route::get('/', function () {
     // }
 
     // return Message::all();
-    return view('welcome');
+    // return view('welcome');
     // $lastRecordDate = Verse::where('updated_at', Verse::max('updated_at'))->first();
     // dd($lastRecordDate);
     //return Verse::all('updated_at')->max('updated_at')->get();
-
+    return redirect(route('dashboard'));
 });
 
 Route::get('/visitor', Visitor::class)->name('visitor');

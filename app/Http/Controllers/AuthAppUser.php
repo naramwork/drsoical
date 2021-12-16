@@ -57,4 +57,42 @@ class AuthAppUser extends Controller
         $user->tokens()->delete();
         return 'done';
     }
+
+
+    public function update_fcm(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'fire_base_token' => 'required|string',
+        ]);
+
+        $user = User::firstWhere('email', $request->email);
+        $newArray = $user->profile->fire_base_token;
+        $newArray[] = $request->fire_base_token;
+
+        $user->profile->fire_base_token = $newArray;
+        return $user->profile->save();
+    }
+
+    public function check_user_exists(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'value' => 'required|string',
+        ]);
+
+        if ($request->name == 'email') {
+            $user = User::where($request->name, $request->value)->first();
+        } else {
+            $user = CustomerProfile::where($request->name, $request->value)->first();
+        }
+        if ($user) {
+            $message = $request->name == 'email' ? "البريد الإلكتروني" : "رقم الهاتف";
+            throw ValidationException::withMessages([
+                'no_user' => [' أن ' . $message . ' المختار مستخدم الرجاء اختيار ' . $message . ' اخر والمحاولة مرة أخرى'],
+            ]);
+        }
+
+        return true;
+    }
 }
