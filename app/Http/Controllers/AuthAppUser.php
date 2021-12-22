@@ -24,7 +24,7 @@ class AuthAppUser extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => ['معلومات الدخول غير صحيحة الرجاء التأكد والمحاولة لاحقا '],
             ]);
         }
         if ($user->isBlocked) {
@@ -65,9 +65,13 @@ class AuthAppUser extends Controller
             'email' => 'required|email',
             'fire_base_token' => 'required|string',
         ]);
-
         $user = User::firstWhere('email', $request->email);
-        $newArray = $user->profile->fire_base_token;
+        $fcmString = $user->profile->fire_base_token;
+        if (gettype($fcmString) == 'string') {
+            $newArray = explode(',', $fcmString);
+        } else {
+            $newArray = $fcmString;
+        }
         $newArray[] = $request->fire_base_token;
 
         $user->profile->fire_base_token = $newArray;
@@ -87,12 +91,23 @@ class AuthAppUser extends Controller
             $user = CustomerProfile::where($request->name, $request->value)->first();
         }
         if ($user) {
-            $message = $request->name == 'email' ? "البريد الإلكتروني" : "رقم الهاتف";
+            $message = $request->name == 'email' ? "بريد الإلكتروني" : "رقم الهاتف";
             throw ValidationException::withMessages([
-                'no_user' => [' أن ' . $message . ' المختار مستخدم الرجاء اختيار ' . $message . ' اخر والمحاولة مرة أخرى'],
+                'no_user' => [' أن ' . 'ال' . $message . ' المختار مستخدم الرجاء اختيار ' . $message . ' اخر والمحاولة مرة أخرى'],
             ]);
         }
 
         return true;
+    }
+
+    public function refresh_fcm($id)
+    {
+        $user = User::find($id);
+        $token = $user->profile->fire_base_token;
+        if ($token != null) {
+            return ['fire_base_token' => $token];
+        } else {
+            return ['error' => 'لايوجد مستخدم بهذا ال id الرجاء المحاولة لاحقا'];
+        }
     }
 }

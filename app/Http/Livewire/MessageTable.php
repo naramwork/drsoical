@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Message;
-
 use App\Traits\Firebase;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
@@ -12,8 +11,10 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 
 class MessageTable extends LivewireDatatable
 {
+
     use Firebase;
     public $model = Message::class;
+
 
     public function columns()
     {
@@ -21,18 +22,18 @@ class MessageTable extends LivewireDatatable
             NumberColumn::name('id')->alignCenter()->label('ID'),
 
 
-            Column::name('sender.name')->searchable()->alignCenter()->unsortable()->label('المرسل')->view('components.user_name_column'),
+            Column::name('sender_id')->searchable()->alignCenter()->unsortable()->label('المرسل')->view('components.user_name_column'),
 
             Column::name('message')->alignCenter()->unsortable()->label('الرسالة')->view('components.message_column'),
 
-            Column::name('recipient.name')->searchable()->alignCenter()->unsortable()->label('المرسل له')->view('components.user_name_column'),
+            Column::name('recipient_id')->alignCenter()->unsortable()->label('المرسل له')->view('components.user_name_column'),
 
 
             DateColumn::name('created_at')->defaultSort('asc|desc')
                 ->alignCenter()
                 ->label('تاريخ الإرسال'),
 
-            Column::name('status')->searchable()->alignCenter()->unsortable()->label('الحالة'),
+            Column::name('status')->searchable()->alignCenter()->label('الحالة'),
 
             Column::callback(['id', 'status'], function ($id, $status) {
 
@@ -46,18 +47,26 @@ class MessageTable extends LivewireDatatable
 
 
         $message = Message::find($id);
+        $senderFcm = $message->sender->profile->fire_base_token;
+        if (gettype($senderFcm) == 'string') {
+            $senderFcm = explode(',', $senderFcm);
+        }
+        $recipientFcm = $message->recipient->profile->fire_base_token;
+        if (gettype($recipientFcm) == 'string') {
+            $recipientFcm = explode(',', $recipientFcm);
+        }
 
         if ($status) {
             $message->status = 'تمت الموافقة';
 
             //send notifications to the sender and recipient 
-            $this->sendFcmNotification($message->sender->profile->fire_base_token, 'لقد تمت الموافقة على رسالتك');
-            $this->sendFcmNotification($message->recipient->profile->fire_base_token, 'لديك رسالة جديدة');
+            $this->sendFcmNotification($senderFcm, 'لقد تمت الموافقة على رسالتك');
+            $this->sendFcmNotification($recipientFcm, 'لديك رسالة جديدة');
         } else {
             $message->status = 'مرفوض';
 
             //send notifications to the sender to tell him that his message get rejected 
-            $this->sendFcmNotification($message->sender->profile->fire_base_token, 'تم رفض الرسالة');
+            $this->sendFcmNotification($senderFcm, 'تم رفض الرسالة');
         }
 
         //show alert to the admin 
@@ -83,11 +92,12 @@ class MessageTable extends LivewireDatatable
             'registration_ids' => $tokenList, //multple token array
             // 'to'        => "/topics/messaging", //single token
 
-            'data' => $extraNotificationData
+            'notification' => $extraNotificationData
         ];
 
         return $this->firebaseNotification($fcmNotification);
     }
+
 
 
 

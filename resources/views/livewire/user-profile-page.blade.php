@@ -6,7 +6,7 @@
         {{ $user->name }}
     </x-sub-header>
 
-    <div class="pt-2 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+    <div class="pt-2  bg-white overflow-hidden shadow-xl sm:rounded-lg">
         <div class=" flex w-full mx-auto  rounded-lg justify-center items-center">
 
             <div class="relative shadow  h-24 w-24  mx-5 border-white rounded-full overflow-hidden border-4">
@@ -14,7 +14,7 @@
                     src="{{ $user->profile_photo_path ?? 'https://ui-avatars.com/api/?name=' . $user->name }}">
             </div>
 
-            <div class="p-6 border-gray-600">
+            <div class="p-6  border-gray-600">
 
                 <div>
                     <p class="text-lg text-right font-semibold">
@@ -44,9 +44,9 @@
 
         </div>
 
-        <div class="mt-3 pt-3 pb-6 mx-6 border-t ">
+        <div class=" m-auto pt-3 pb-6 w-full border-t ">
 
-            <div class="container  mt-2  w-full rounded-md">
+            <div class="container  mt-2 mx-auto w-full rounded-md">
                 <div class="grid grid-cols-2 gap-4">
                     {{-- Gender Info Row --}}
                     <div class="flex  text-base border-2 border-gray-300 rounded-xl  bg-gray-50 py-3">

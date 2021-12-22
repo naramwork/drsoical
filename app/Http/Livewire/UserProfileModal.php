@@ -15,8 +15,7 @@ class UserProfileModal extends ModalComponent
 
     public function mount(int $id)
     {
-        $message = Message::find($id);
-        $this->user = $message->sender;
+        $this->user = User::find($id);
     }
 
 

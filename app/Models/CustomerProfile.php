@@ -20,36 +20,40 @@ class CustomerProfile extends Model
         'phone_number' => ['string', 'max:255', 'required'],
         'gender' => ['string', 'max:1', 'required'],
         'children_number' => ['numeric', 'required'],
-        'educational_Status' => ['string', 'max:255', 'required'],
         'social_status' => ['string', 'max:255', 'required'],
         'city' => ['string', 'max:255', 'required'],
         'nationality' => ['string', 'max:255', 'required'],
         'civil_id_no' => ['string', 'max:255', 'required'],
-        'civil_id_no_exp' => ['string', 'max:255', 'required'],
         'fire_base_token' => ['required'],
         'birthdate' => ['date', 'max:255', 'required'],
-        'address' => ['string', 'required'],
         'height' => ['numeric', 'max:255', 'required'],
         'weight' => ['numeric', 'required'],
-        'more' => ['json', 'required'],
-        // 'mirage_type' => ['string', 'max:255', 'nullable'],
-        // 'about' => ['string', 'nullable'],
-        // 'income' => ['string', 'max:255', 'nullable'],
-        // 'required_specifications' => ['string', 'nullable'],
-        // 'smoking' => ['string', 'max:255', 'nullable'],
-        // 'beard' => ['string', 'max:255', 'nullable'],
-        // 'financial_status' => ['string', 'max:255', 'nullable'],
-        // 'health_status' => ['string', 'max:255', 'nullable'],
-        // 'skin_colour' => ['string', 'max:255', 'nullable'],
-        // 'physique' => ['string', 'max:255', 'nullable'],
-        // 'religiosity' => ['string', 'max:255', 'nullable'],
-        // 'prayer' => ['string', 'nullable'],
+
+        'fullName' => ['string', 'max:255', 'required'],
+        'country' => ['string', 'max:255', 'required'],
+        'smoking' => ['string', 'max:255', 'required'],
+        'beard' => ['string', 'max:255', 'required'],
+        'religion' => ['string', 'max:255', 'required'],
+        'financialStatus' => ['string', 'max:255', 'required'],
+        'skinColour' => ['string', 'max:255', 'required'],
+        'physique' => ['string', 'max:255', 'required'],
+        'religiosity' => ['string', 'max:255', 'required'],
+        'employment' => ['string', 'max:255', 'required'],
+        'healthStatus' => ['string', 'max:255', 'required'],
+        'specifications' => ['string', 'max:255', 'required'],
+        'income' => ['string', 'max:255', 'required'],
+        'aboutYou' => ['string', 'max:255', 'required'],
+        'image_url' => ['string', 'max:255', 'required'],
+        'educational' => ['string', 'max:255', 'required'],
+        'prayer' => ['string', 'required'],
     ];
+
+
 
     protected $guarded = [];
 
     public function user()
     {
-        return $this->morphOne(User::class, 'profile');
+        return $this->morphOne(User::class, 'profile')->setEagerLoads([]);
     }
 }
