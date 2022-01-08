@@ -5,7 +5,7 @@
     </x-sub-header>
 
     <div class="pt-2 bg-white overflow-hidden shadow-xl sm:rounded-lg">
-        <div class="flex items-center justify-between	 ">
+        {{-- <div class="flex items-center justify-between	 ">
             <button onclick='Livewire.emit("openModal", "edit-dua-modal")'
                 class="h-10 px-7 m-2 text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800">إضافة</button>
 
@@ -24,7 +24,7 @@
             </div>
 
         </div>
-        <hr class="m-4">
+        <hr class="m-4"> --}}
         @livewire('duas-tabel')
     </div>
 </div>

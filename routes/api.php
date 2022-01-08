@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AppInfoController;
 use App\Http\Controllers\AuthAppUser;
 use App\Http\Controllers\ContentApiController;
+use App\Http\Controllers\EditUserController;
 use App\Http\Controllers\MarriageController;
 use App\Http\Controllers\MessageController;
 
@@ -26,10 +28,13 @@ Route::get('/updated/{date?}', [ContentApiController::class, 'getUpdatedContent'
 
 Route::post('/login_app_user', [AuthAppUser::class, 'login']);
 Route::post('/check_user', [AuthAppUser::class, 'check_user_exists']);
-Route::post('/check_user', [AuthAppUser::class, 'check_user_exists']);
 
 
-
+//app info links
+Route::get('about_us', [AppInfoController::class, 'getAboutUs']);
+Route::get('call_us', [AppInfoController::class, 'getCallUs']);
+Route::get('app_ad', [AppInfoController::class, 'getAppAd']);
+Route::get('marriage_explain', [AppInfoController::class, 'getMarriageExplain']);
 
 
 
@@ -41,6 +46,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/update_fcm', [AuthAppUser::class, 'update_fcm']);
     Route::get('/refresh_user_fcm/{id}', [AuthAppUser::class, 'refresh_fcm']);
     Route::post('/logout_app_user', [AuthAppUser::class, 'logout']);
+    Route::get('/refresh_user/{id}', [AuthAppUser::class, 'refreshUserData']);
+    Route::post('/edit_user_data', [EditUserController::class, 'editUserData']);
+
 
     //message routes
     Route::post('/send_message', [MessageController::class, 'store']);
@@ -53,4 +61,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/get_random/{gender}', [MarriageController::class, 'get_random']);
     Route::post('/send_marriage_request', [MarriageController::class, 'store']);
     Route::get('/get_marriage_requests/{id}', [MarriageController::class, 'show']);
+    Route::post('/marriage_request_update', [MarriageController::class, 'update']);
+
+
+    // Edit User Info
+    Route::post('/add_image', [EditUserController::class, 'addimage']);
 });

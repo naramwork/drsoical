@@ -20,6 +20,7 @@ class DuasTabel extends LivewireDatatable
             NumberColumn::name('order')
                 ->defaultSort('asc')
                 ->searchable()
+                ->view('components.dua-order-name')
                 ->alignCenter()
                 ->label('الترتيب'),
 

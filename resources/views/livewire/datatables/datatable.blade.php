@@ -85,7 +85,7 @@
         @endif
 
         <div wire:loading.class="opacity-50"
-            class="rounded-lg @unless($complex || $this->hidePagination) rounded-b-none @endunless shadow-lg bg-white max-w-screen overflow-hidden border-4 @if ($this->activeFilters) border-blue-500 @else border-transparent @endif @if ($complex) rounded-b-none border-b-0 @endif">
+            class="rounded-lg @unless($complex || $this->hidePagination) rounded-b-none @endunless shadow-lg bg-white max-w-screen border-4 @if ($this->activeFilters) border-blue-500 @else border-transparent @endif @if ($complex) rounded-b-none border-b-0 @endif">
             <div>
                 <div class="table align-middle min-w-full">
                     @unless($this->hideHeader)

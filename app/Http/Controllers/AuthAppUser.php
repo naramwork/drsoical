@@ -27,11 +27,11 @@ class AuthAppUser extends Controller
                 'email' => ['معلومات الدخول غير صحيحة الرجاء التأكد والمحاولة لاحقا '],
             ]);
         }
-        if ($user->isBlocked) {
-            throw ValidationException::withMessages([
-                'block' => ['لقد تم حظر حسابك'],
-            ]);
-        }
+        // if ($user->isBlocked) {
+        //     throw ValidationException::withMessages([
+        //         'block' => ['لقد تم حظر حسابك'],
+        //     ]);
+        // }
         $toke = $user->createToken($request->device_name)->plainTextToken;
 
         return [
@@ -40,6 +40,10 @@ class AuthAppUser extends Controller
         ];
     }
 
+    public function refreshUserData(int $id)
+    {
+        return User::find($id);
+    }
 
     public function logout(Request $request)
     {

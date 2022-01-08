@@ -13,7 +13,7 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 
 class CustomerTable extends LivewireDatatable
 {
-
+    use Firebase;
     public function builder()
     {
         return User::where('profile_type', CustomerProfile::class)->join('customer_profiles', 'users.profile_id', '=', 'customer_profiles.id');
@@ -22,9 +22,10 @@ class CustomerTable extends LivewireDatatable
     public function columns()
     {
         return [
-            NumberColumn::name('id')->alignCenter()->label('id'),
 
-            Column::name('name')->searchable()->alignCenter()->unsortable()->label('الاسم'),
+            //NumberColumn::name('id')->alignCenter()->label('id'),
+
+            Column::name('id')->searchable()->alignCenter()->unsortable()->label('الاسم')->view('components.user_name_column'),
 
             Column::name('email')->searchable()->alignCenter()->unsortable()->label('البريد الإلكتروني'),
             // Column::name('email')->searchable()->alignCenter()->unsortable()->label('رقم الهاتف')->view('components.phone'),
@@ -46,6 +47,16 @@ class CustomerTable extends LivewireDatatable
         if ($user->save()) {
             $this->emit('customMessage', 'تم العملية بنجاح', 'green');
             $this->emit('setShowAlertModal');
+            $userFcm = $user->profile->fire_base_token;
+            if (gettype($userFcm) == 'string') {
+                $userFcm = explode(',', $userFcm);
+            }
+            $status = 'قبوله';
+            if ($block) {
+                $status = 'رفضه';
+            }
+
+            $this->sendFcmNotification($userFcm, 'مرحبا ' . $user->name . ' أن طلب العضوية الخاص بكم قد تم ' . $status);
         } else {
             $this->emit('customMessage', 'حدث خطأ ما الرجاء المحاولة لاحقا', 'red');
             $this->emit('setShowAlertModal');
@@ -54,6 +65,23 @@ class CustomerTable extends LivewireDatatable
 
 
 
+    public function sendFcmNotification(array $tokenList, String $body)
+    {
+
+        $extraNotificationData = [
+            "body" => $body,
+            "title" => 'طلب العضوية',
+        ];
+
+        $fcmNotification = [
+            'registration_ids' => $tokenList, //multple token array
+            // 'to'        => "/topics/messaging", //single token
+
+            'notification' => $extraNotificationData
+        ];
+
+        return $this->firebaseNotification($fcmNotification);
+    }
 
 
     public function cellClasses($row, $column)

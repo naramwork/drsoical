@@ -20,30 +20,10 @@ use Spatie\Permission\Models\Role;
 
 
 Route::get('/', function () {
-    // return User::where('profile_type', AdminProfile::class)->join('admin_profiles', 'users.profile_id', '=', 'admin_profiles.id')->get();
-    if (Auth::user()) {
-        // Auth::user()->assignRole('superAdmin');
-        var_dump(Auth::user()->profile->fire_base_token);
-    }
-    // $message = Message::where('sender_id', 2)->get()->groupBy('recipient_id');
-    // return $message;
-    // return Message::all();
-    // return view('welcome');
-    //return Message::all()->random(5)->values();
-    // $lastRecordDate = Verse::where('updated_at', Verse::max('updated_at'))->first();
-    // dd($lastRecordDate);
-    //return Verse::all('updated_at')->max('updated_at')->get();
+
     return redirect(route('dashboard'));
 });
 
-
-//to make a link to storage folder
-Route::get('/generate', function () {
-    $targetFolder = '/home/naramapps/public_html/laravel/storage/app/public';
-    $linkFolder = '/home/naramapps/public_html/storage';
-    symlink($targetFolder, $linkFolder);
-    echo 'Symlink completed';
-})->name('generate');
 
 Route::get('/visitor', Visitor::class)->name('visitor');
 

@@ -26,11 +26,24 @@ class MarriageController extends Controller
 
         $message = Message::where('sender_id', $request->sender_id)
             ->where('recipient_id', $request->recipient_id)->get();
+        // don't allow user to send marriage request before sending one message at least
         if ($message->isEmpty()) {
             $statue = 'error';
             $content = 'عليك إرسال رسالة واحدة على الأقل قبل إرسال طلب زواج';
             return ['status' => $statue, 'content' => $content];
         }
+
+        //check to see if there is one marriage request with no response before sending one more
+        $oldMarriage = MarriageRequest::where('sender_id', $request->sender_id)
+            ->where('recipient_id', $request->recipient_id)
+            ->where('status', 'في الإنتظار')->first();
+        if ($oldMarriage) {
+            $statue = 'error';
+            $content = 'هنالك طلب مسبق من دون رد الرجاء الإنتظار قبل إرسال طلب اخر.';
+            return ['status' => $statue, 'content' => $content];
+        }
+
+
         $marriage =  MarriageRequest::create($attr);
 
         if ($marriage) {
@@ -74,12 +87,12 @@ class MarriageController extends Controller
         if ($request->status == 'إلغاء') {
 
             $marriageRequest->status = $request->status;
-            return $marriageRequest->save();
             $this->sendFcmNotification($senderFcm, ' لقد تم ' . $request->status . ' طلب الزواج ');
+            return $marriageRequest->save();
         } else {
             $marriageRequest->status = $request->status;
-            $marriageRequest->save();
             $this->sendFcmNotification($senderFcm, ' لقد تم ' . $request->status . ' طلب الزواج الخاص بك');
+            return $marriageRequest->save();
         }
     }
 

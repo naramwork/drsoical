@@ -3,7 +3,7 @@
 
     <div class="relative shadow  h-24 w-24  mx-5 border-white rounded-full overflow-hidden border-4">
         <img class="object-cover w-full h-full"
-            src="{{ $user->profile_photo_path ?? 'https://ui-avatars.com/api/?name=' . $user->name }}">
+            src="{{ url('storage/images/' . $user->profile->image_url) ?? 'https://ui-avatars.com/api/?name=' . $user->name }}">
     </div>
 
     <div class="p-6 border-gray-600">

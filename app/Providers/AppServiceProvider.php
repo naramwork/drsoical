@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // $this->app->bind('path.public', function () {
-        //     return './../public_html';
+        //     return  '/home/albaqer/public_html/admin';
         // });
     }
 }

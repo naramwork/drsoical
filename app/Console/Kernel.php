@@ -18,10 +18,13 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
-            $content = ContentInfo::where('name', 'verse')->first();
-            $content->start += 1;
-            $content->save();
-        })->daily();
+            $verse = ContentInfo::where('name', 'verse')->first();
+            $verse->start += 1;
+            $verse->save();
+            $hadith = ContentInfo::where('name', 'hadith')->first();
+            $hadith->start += 1;
+            $hadith->save();
+        })->cron('* * * * *');
     }
 
     /**
