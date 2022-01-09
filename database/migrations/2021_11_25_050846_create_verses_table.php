@@ -14,7 +14,7 @@ class CreateVersesTable extends Migration
     public function up()
     {
         Schema::create('verses', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->text('content');
             $table->String('range')->nullable();
             $table->String('part')->nullable();

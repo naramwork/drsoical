@@ -134,6 +134,11 @@
                         </x-jet-dropdown>
                     @endcan
 
+                    <x-jet-nav-link class="text-base no-underline px-10 pb-1 " href="{{ route('user-message') }}"
+                        :active="request()->routeIs('user-message')">
+                        {{ __('الإبلاغات') }}
+                    </x-jet-nav-link>
+
                 </div>
             </div>
 

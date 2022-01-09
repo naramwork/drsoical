@@ -6,6 +6,7 @@ use App\Http\Livewire\DuasPage;
 use App\Http\Livewire\HadithPage;
 use App\Http\Livewire\MarriageRequestPage;
 use App\Http\Livewire\MessagePage;
+use App\Http\Livewire\UserMessagePage;
 use App\Http\Livewire\UserProfilePage;
 use App\Http\Livewire\VersesPage;
 use App\Http\Livewire\Visitor;
@@ -44,6 +45,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', CheckStatus::class]],
         Route::get('/admin/admins-control', AdminsControl::class)->name('admins-control');
 
         Route::get('/admin/customers-control', CustomersControl::class)->name('customers-control');
+
+        Route::get('/admin/user-message', UserMessagePage::class)->name('user-message');
     });
 
 

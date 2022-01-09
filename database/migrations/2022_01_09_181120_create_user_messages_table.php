@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContentInfosTable extends Migration
+class CreateUserMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateContentInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('content_infos', function (Blueprint $table) {
+        Schema::create('user_messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->String('name');
-            $table->integer('start');
+            $table->unsignedInteger('user_id');
+            $table->text('message');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateContentInfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('content_infos');
+        Schema::dropIfExists('user_messages');
     }
 }

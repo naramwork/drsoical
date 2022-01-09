@@ -14,7 +14,7 @@ class CreateDuasTable extends Migration
     public function up()
     {
         Schema::create('duas', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->text('content');
             $table->integer('order')->nullable();
             $table->timestamps();
