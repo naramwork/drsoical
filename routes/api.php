@@ -6,7 +6,8 @@ use App\Http\Controllers\ContentApiController;
 use App\Http\Controllers\EditUserController;
 use App\Http\Controllers\MarriageController;
 use App\Http\Controllers\MessageController;
-
+use App\Http\Controllers\UserMessageController;
+use App\Models\UserMessage;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -66,4 +67,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Edit User Info
     Route::post('/add_image', [EditUserController::class, 'addimage']);
+
+    Route::post('/user_message', [UserMessageController::class, 'store']);
 });
