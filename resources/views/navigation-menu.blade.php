@@ -148,6 +148,7 @@
                 <!-- Settings Dropdown -->
                 <div class="mr-3 relative">
                     <x-jet-dropdown align="right" width="48">
+
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button
@@ -219,29 +220,74 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-2 pb-3 space-y-1 border-t">
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('لوحة التحكم') }}
             </x-jet-responsive-nav-link>
         </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center px-4">
-                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="flex-shrink-0 mr-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
-                            alt="{{ Auth::user()->name }}" />
-                    </div>
-                @endif
 
-                <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
+        <div class="pt-2 pb-3 space-y-1 border-t">
+            <x-jet-responsive-nav-link href="{{ route('verses') }}" :active="request()->routeIs('verses')">
+                {{ __('الآيات') }}
+            </x-jet-responsive-nav-link>
+
+            <x-jet-responsive-nav-link href="{{ route('duas') }}" :active="request()->routeIs('duas')">
+                {{ __('الأدعية') }}
+            </x-jet-responsive-nav-link>
+
+            <x-jet-responsive-nav-link href="{{ route('hadith') }}" :active="request()->routeIs('hadith')">
+                {{ __('الحديث الشريف') }}
+            </x-jet-responsive-nav-link>
+        </div>
+
+        @can('control')
+            <div class="pt-2 pb-3 space-y-1 border-t">
+                <x-jet-responsive-nav-link href="{{ route('customers-control') }}"
+                    :active="request()->routeIs('customers-control')">
+                    {{ __('المستخدمين') }}
+                </x-jet-responsive-nav-link>
+
+                <x-jet-responsive-nav-link href="{{ route('admins-control') }}"
+                    :active="request()->routeIs('admins-control')">
+                    {{ __('الإدارة') }}
+                </x-jet-responsive-nav-link>
             </div>
+        @endcan
+
+        @can('observe')
+            <div class="pt-2 pb-3 space-y-1 border-t">
+                <x-jet-responsive-nav-link href="{{ route('messages') }}" :active="request()->routeIs('messages')">
+                    {{ __('الرسائل') }}
+
+                </x-jet-responsive-nav-link>
+
+                <x-jet-responsive-nav-link href="{{ route('marriage-request') }}"
+                    :active="request()->routeIs('marriage-request')">
+                    {{ __('طلبات الزواج') }}
+                </x-jet-responsive-nav-link>
+            </div>
+        @endcan
+
+        @can('observe')
+            <div class="pt-2 pb-3 space-y-1 border-t">
+                <x-jet-responsive-nav-link href="{{ route('user-message') }}"
+                    :active="request()->routeIs('user-message')">
+                    {{ __('الإبلاغات') }}
+                </x-jet-responsive-nav-link>
+            </div>
+        @endcan
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-2 pb-1 border-t border-gray-200">
+
+
+
+
+
 
             <div class="mt-3 space-y-1">
+
                 <!-- Account Management -->
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}"
                     :active="request()->routeIs('profile.show')">

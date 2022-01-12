@@ -1,7 +1,7 @@
 <div>
-    <div class=" py-28">
+    <div class="  py-28">
 
-        <div class="m-auto w-2/4 grid grid-cols-6 gap-4 justify-center">
+        <div class="m-auto lg:w-2/4 md:w-3/4  grid grid-cols-6 gap-4 justify-center">
 
             @can('control')
 

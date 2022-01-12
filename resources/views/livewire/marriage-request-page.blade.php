@@ -4,7 +4,7 @@
         طلبات الزواج
     </x-sub-header>
 
-    <div class="pt-2 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+    <div class="pt-2 bg-white overflow-x-auto shadow-xl sm:rounded-lg">
 
         @livewire('marriage-request-table')
 

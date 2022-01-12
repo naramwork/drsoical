@@ -3,7 +3,7 @@
         الإدارة
     </x-sub-header>
     <x-icons.cog wire:loading class="h-9 w-9 animate-spin text-gray-400" />
-    <div class="pt-2 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+    <div class="pt-2 bg-white overflow-x-auto shadow-xl sm:rounded-lg">
 
         @livewire('admin-table')
     </div>

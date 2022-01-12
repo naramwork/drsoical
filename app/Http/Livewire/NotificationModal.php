@@ -39,7 +39,7 @@ class NotificationModal extends ModalComponent
 
         $fcmNotification = [
             // 'registration_ids' => $tokenList, //multple token array
-            'to'        => "/topics/message", //single token
+            'to'        => "/topics/general", //single token
 
             'notification' => $extraNotificationData
         ];
