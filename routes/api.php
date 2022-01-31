@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //public routes
 Route::post('/sign_up', [RegisteredUserController::class, 'store']);
 Route::get('/verses', [ContentApiController::class, 'getVerses']);
+Route::get('/hadith', [ContentApiController::class, 'getHadith']);
 
 Route::get('/updated/{date?}', [ContentApiController::class, 'getUpdatedContent']);
 

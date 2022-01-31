@@ -27,6 +27,22 @@ class ContentApiController extends Controller
         return collect(['previous' => $previous, 'verses' => $verses]);
     }
 
+    public function getHadith()
+    {
+
+        $order = ContentInfo::firstWhere('name', 'hadith')->start;
+        $hadith = Hadith::where('order', '>=', $order)->paginate(10);
+        $previous = null;
+        if ($hadith->currentPage() >=  $hadith->lastPage()) {
+            $currentPage = $hadith->currentPage() -  $hadith->lastPage() + 1;
+
+            \Illuminate\Pagination\Paginator::currentPageResolver(function () use ($currentPage) {
+                return $currentPage;
+            });
+            $previous = Hadith::where('order', '<', $order)->paginate(10);
+        }
+        return collect(['previous' => $previous, 'hadith' => $hadith]);
+    }
 
     public function getUpdatedContent($date = null)
     {
@@ -34,25 +50,25 @@ class ContentApiController extends Controller
 
 
         $contentInfo = ContentInfo::select('name', 'start')->get();
-        $verses = Verse::Where('updated_at', '>=', $date)->get();
+        $VerseOrder = ContentInfo::firstWhere('name', 'verse')->start;
+        $HadithOrder = ContentInfo::firstWhere('name', 'hadith')->start;
+
+        $verses = Verse::Where('order', '>=', $VerseOrder)->take(3)->get();
         $dua = Dua::Where('updated_at', '>=', $date)->get();
-        $hadith = Hadith::Where('updated_at', '>=', $date)->get();
+        $hadith = Hadith::Where('order', '>=', $HadithOrder)->take(3)->get();
         return collect(['verses' => $verses, 'dua' => $dua, 'hadith' => $hadith, 'content_info' => $contentInfo]);
     }
 
 
     public function firstTimeData()
     {
-        $contentInfo = ContentInfo::select('name', 'start')->get();
-        $verses = Verse::All();
-        $dua = Dua::all();
-        $hadith = Hadith::all();
-        return collect(['verses' => $verses, 'dua' => $dua, 'hadith' => $hadith, 'content_info' => $contentInfo]);
-    }
 
-    // public function getContentInfo()
-    // {
-    //     //return ContentInfo::all();
-    //     return $lastRecordDate = Verse::max('updated_at');
-    // }
+        $VerseOrder = ContentInfo::firstWhere('name', 'verse')->start;
+        $HadithOrder = ContentInfo::firstWhere('name', 'hadith')->start;
+
+        $verses = Verse::Where('order', '>=', $VerseOrder)->take(3)->get();
+        $dua = Dua::all();
+        $hadith = Hadith::Where('order', '>=', $HadithOrder)->take(3)->get();
+        return collect(['verses' => $verses, 'dua' => $dua, 'hadith' => $hadith]);
+    }
 }
